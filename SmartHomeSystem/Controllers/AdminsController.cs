@@ -97,14 +97,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("devices")]
-        public async Task<ActionResult> AddDevice([FromBody] Device device)
+        public async Task<ActionResult> AddDevice([FromBody] DeviceDto deviceDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddDeviceAsync(adminId, device);
+            await _context.AddDeviceAsync(deviceDto);
             return Ok();
         }
 
@@ -134,14 +134,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("subscription-plans")]
-        public async Task<ActionResult> AddSubscriptionPlan([FromBody] SubscriptionPlan subscriptionPlan)
+        public async Task<IActionResult> AddSubscriptionPlan([FromBody] SubscriptionPlanDto planDto )
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddSubscriptionPlanAsync(adminId, subscriptionPlan);
+            await _context.AddSubscriptionPlanAsync(planDto);
             return Ok();
         }
 
@@ -171,14 +171,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("alerts")]
-        public async Task<ActionResult> AddAlert([FromBody] Alert alert)
+        public async Task<IActionResult> AddAlert([FromBody] AlertDto alertDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddAlertAsync(adminId, alert);
+            await _context.AddAlertAsync( alertDto);
             return Ok();
         }
 
@@ -208,14 +208,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("energy-usages")]
-        public async Task<ActionResult> AddEnergyUsage([FromBody] EnergyUsage energyUsage)
+        public async Task<IActionResult> AddEnergyUsage([FromBody] EnergyUsageDto energyUsageDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddEnergyUsageAsync(adminId, energyUsage);
+            await _context.AddEnergyUsageAsync(energyUsageDto);
             return Ok();
         }
 
@@ -245,14 +245,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("access-controls")]
-        public async Task<ActionResult> AddAccessControl([FromBody] AccessControl accessControl)
+        public async Task<IActionResult> AddAccessControl([FromBody] AccessControlDto accessControlDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddAccessControlAsync(adminId, accessControl);
+            await _context.AddAccessControlAsync(accessControlDto);
             return Ok();
         }
 
@@ -282,14 +282,11 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("scenes")]
-        public async Task<ActionResult> AddScene([FromBody] Scene scene)
+        public async Task<ActionResult> AddScene([FromBody] SceneDto sceneDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+            
 
-            await _context.AddSceneAsync(adminId, scene);
+            await _context.AddSceneAsync(sceneDto);
             return Ok();
         }
 
@@ -319,14 +316,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("rooms")]
-        public async Task<ActionResult> AddRoom([FromBody] Room room)
+        public async Task<ActionResult> AddRoom([FromBody] RoomDto roomDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddRoomAsync(adminId, room);
+            await _context.AddRoomAsync(roomDto);
             return Ok();
         }
 
@@ -356,14 +353,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("user-subscriptions")]
-        public async Task<ActionResult> AddUserSubscription([FromBody] UserSubscription subscription)
+        public async Task<IActionResult> AddUserSubscription([FromBody] UserSubscriptionDto userSubscriptionDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddUserSubscriptionAsync(adminId, subscription);
+            await _context.AddUserSubscriptionAsync(userSubscriptionDto);
             return Ok();
         }
 
@@ -393,14 +390,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("automation-rules")]
-        public async Task<ActionResult> AddAutomationRule([FromBody] AutomationRule rule)
+        public async Task<IActionResult> AddAutomationRule([FromBody] AutomationRuleDto automationRuleDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddAutomationRuleAsync(adminId, rule);
+            await _context.AddAutomationRuleAsync(automationRuleDto);
             return Ok();
         }
 
@@ -430,14 +427,14 @@ namespace SmartHomeSystem.Controllers
         }
 
         [HttpPost("notifications")]
-        public async Task<ActionResult> AddNotification([FromBody] Notification notification)
+        public async Task<ActionResult> AddNotification([FromBody] NotificationDto notificationDto)
         {
             if (!int.TryParse(User.Identity.Name, out int adminId))
             {
                 return BadRequest("Invalid admin ID.");
             }
 
-            await _context.AddNotificationAsync(adminId, notification);
+            await _context.AddNotificationAsync(notificationDto);
             return Ok();
         }
 

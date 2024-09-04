@@ -12,8 +12,8 @@ using SmartHomeSystem.Data;
 namespace SmartHomeSystem.Migrations
 {
     [DbContext(typeof(SmartHomeDbContext))]
-    [Migration("20240904145107_AddProviderIdToSubscriptionPlanAndAlertandHouse")]
-    partial class AddProviderIdToSubscriptionPlanAndAlertandHouse
+    [Migration("20240904180551_convertStringIdToIntId")]
+    partial class convertStringIdToIntId
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,63 +102,63 @@ namespace SmartHomeSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1342467187,
+                            Id = -1599047914,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 966144751,
+                            Id = 782052165,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = -1609327333,
+                            Id = 728177114,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = -1550551286,
+                            Id = 878915507,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 350177333,
+                            Id = 652439434,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "guest"
                         },
                         new
                         {
-                            Id = 1736278602,
+                            Id = 170081494,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = 1199700905,
+                            Id = -761904096,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = 1001959955,
+                            Id = -1166301098,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = 403808466,
+                            Id = 1256841260,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "provider"
@@ -257,15 +257,14 @@ namespace SmartHomeSystem.Migrations
                     b.Property<int>("AccessLevelId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("GuestId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("GuestId")
+                        .HasColumnType("int");
 
                     b.Property<int>("HouseId")
                         .HasColumnType("int");
@@ -351,8 +350,11 @@ namespace SmartHomeSystem.Migrations
 
             modelBuilder.Entity("SmartHomeSystem.Models.Admin", b =>
                 {
-                    b.Property<string>("AdminId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AdminId"));
 
                     b.Property<string>("CharactersId")
                         .IsRequired()
@@ -385,9 +387,8 @@ namespace SmartHomeSystem.Migrations
                     b.Property<int>("ActionSeverityId")
                         .HasColumnType("int");
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("DeviceId")
                         .HasColumnType("int");
@@ -396,9 +397,8 @@ namespace SmartHomeSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProviderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -428,9 +428,8 @@ namespace SmartHomeSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -527,15 +526,14 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DeviceId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<int>("DeviceTypeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("GuestId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("GuestId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsOnline")
                         .HasColumnType("bit");
@@ -555,9 +553,8 @@ namespace SmartHomeSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProviderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
@@ -606,9 +603,8 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EnergyUsageId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Cost")
                         .HasColumnType("decimal(18,2)");
@@ -619,9 +615,8 @@ namespace SmartHomeSystem.Migrations
                     b.Property<float>("EnergyConsumed")
                         .HasColumnType("real");
 
-                    b.Property<string>("ProviderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
@@ -639,8 +634,11 @@ namespace SmartHomeSystem.Migrations
 
             modelBuilder.Entity("SmartHomeSystem.Models.Guest", b =>
                 {
-                    b.Property<string>("GuestId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("GuestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("GuestId"));
 
                     b.Property<string>("CharactersId")
                         .IsRequired()
@@ -670,13 +668,11 @@ namespace SmartHomeSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ProviderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
 
                     b.HasKey("HouseId");
 
@@ -725,9 +721,8 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("NotificationId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
@@ -748,8 +743,11 @@ namespace SmartHomeSystem.Migrations
 
             modelBuilder.Entity("SmartHomeSystem.Models.Provider", b =>
                 {
-                    b.Property<string>("ProviderId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProviderId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProviderId"));
 
                     b.Property<string>("CharactersId")
                         .IsRequired()
@@ -779,9 +777,8 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<int>("HouseId")
                         .HasColumnType("int");
@@ -833,16 +830,15 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SceneId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("GuestId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int?>("GuestId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
@@ -923,9 +919,8 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SubscriptionPlanId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -938,9 +933,8 @@ namespace SmartHomeSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ProviderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("ProviderId")
+                        .HasColumnType("int");
 
                     b.HasKey("SubscriptionPlanId");
 
@@ -959,9 +953,8 @@ namespace SmartHomeSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserSubscriptionId"));
 
-                    b.Property<string>("AdminId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("AdminId")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");

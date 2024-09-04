@@ -90,11 +90,36 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddDeviceAsync(int adminId, Device device)
+        public async Task<Device> AddDeviceAsync( DeviceDto deviceDto)
         {
-            device.AdminId = adminId;
-            _context.Devices.Add(device);
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == deviceDto.DeviceId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            var devise = new Device
+            {
+               DeviceId = deviceDto.DeviceId,
+                Name = deviceDto.Name,
+               AdminId = deviceDto.AdminId,
+                DeviceTypeId = deviceDto.DeviceTypeId,
+                RoomId = deviceDto.RoomId,
+                IsOnline = deviceDto.IsOnline,
+                LastCommunicationTime = deviceDto.LastCommunicationTime,
+                ProviderId = deviceDto.ProviderId,
+                ModelNumber = deviceDto.ModelNumber,
+                Manufacturer = deviceDto.Manufacturer
+            };
+            
+
+            // Add the Device entity to the DbContext
+            _context.Devices.Add(devise);
+            
             await _context.SaveChangesAsync();
+
+            return devise;
         }
 
         public async Task RemoveDeviceAsync(int adminId, int deviceId)
@@ -116,12 +141,33 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddSubscriptionPlanAsync(int adminId, SubscriptionPlan plan)
+        public async Task<SubscriptionPlan> AddSubscriptionPlanAsync(SubscriptionPlanDto planDto)
         {
-            plan.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == planDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the SubscriptionPlan entity
+            var plan = new SubscriptionPlan
+            {
+                Name = planDto.Name,
+                Description = planDto.Description,
+                MonthlyCost = planDto.MonthlyCost,
+                AdminId = planDto.AdminId,
+                ProviderId = planDto.ProviderId
+            };
+
+            // Add the SubscriptionPlan entity to the DbContext
             _context.SubscriptionPlans.Add(plan);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return plan;
         }
+
 
         public async Task RemoveSubscriptionPlanAsync(int adminId, int planId)
         {
@@ -142,12 +188,33 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddAlertAsync(int adminId, Alert alert)
+        public async Task<Alert> AddAlertAsync(AlertDto alertDto)
         {
-            alert.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == alertDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the Alert entity
+            var alert = new Alert
+            {
+                Message = alertDto.Message,
+                Timestamp = alertDto.Timestamp,
+                ActionSeverityId = alertDto.ActionSeverityId,
+                ProviderId = alertDto.ProviderId,
+                AdminId = alertDto.AdminId
+            };
+
+            // Add the Alert entity to the DbContext
             _context.Alerts.Add(alert);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return alert;   
         }
+
 
         public async Task RemoveAlertAsync(int adminId, int alertId)
         {
@@ -168,11 +235,32 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddEnergyUsageAsync(int adminId, EnergyUsage energyUsage)
+        public async Task<EnergyUsage> AddEnergyUsageAsync(EnergyUsageDto energyUsageDto)
         {
-            energyUsage.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == energyUsageDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the EnergyUsage entity
+            var energyUsage = new EnergyUsage
+            {
+                DeviceId = energyUsageDto.DeviceId,
+                Timestamp = energyUsageDto.Timestamp,
+                EnergyConsumed = energyUsageDto.EnergyConsumed,
+                Cost = energyUsageDto.Cost,
+                AdminId = energyUsageDto.AdminId,
+                ProviderId = energyUsageDto.ProviderId
+            };
+
+            // Add the EnergyUsage entity to the DbContext
             _context.EnergyUsages.Add(energyUsage);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return energyUsage;
         }
 
         public async Task RemoveEnergyUsageAsync(int adminId, int energyUsageId)
@@ -194,12 +282,33 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddAccessControlAsync(int adminId, AccessControl accessControl)
+        public async Task<AccessControl> AddAccessControlAsync(AccessControlDto accessControlDto)
         {
-            accessControl.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == accessControlDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the AccessControl entity
+            var accessControl = new AccessControl
+            {
+                AdminId = accessControlDto.AdminId,
+                HouseId = accessControlDto.HouseId,
+                AccessLevelId = accessControlDto.AccessLevelId,
+                StartTime = accessControlDto.StartTime,
+                EndTime = accessControlDto.EndTime
+            };
+
+            // Add the AccessControl entity to the DbContext
             _context.AccessControls.Add(accessControl);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return accessControl;
         }
+
 
         public async Task RemoveAccessControlAsync(int adminId, int accessControlId)
         {
@@ -220,12 +329,32 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddSceneAsync(int adminId, Scene scene)
+        public async Task<Scene> AddSceneAsync(SceneDto sceneDto)
         {
-            scene.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == sceneDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the Scene entity
+            var scene = new Scene
+            {
+                AdminId = sceneDto.AdminId,
+                Name = sceneDto.Name,
+                Description = sceneDto.Description,
+                IsActive = sceneDto.IsActive
+            };
+
+            // Add the Scene entity to the DbContext
             _context.Scenes.Add(scene);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return scene;
         }
+
 
         public async Task RemoveSceneAsync(int adminId, int sceneId)
         {
@@ -246,12 +375,32 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddRoomAsync(int adminId, Room room)
+        public async Task<Room> AddRoomAsync(RoomDto roomDto)
         {
-            room.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == roomDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the Room entity
+            var room = new Room
+            {
+                Name = roomDto.Name,
+                HouseId = roomDto.HouseId,
+                RoomTypeId = roomDto.RoomTypeId,
+                AdminId = roomDto.AdminId
+            };
+
+            // Add the Room entity to the DbContext
             _context.Rooms.Add(room);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return room;
         }
+
 
         public async Task RemoveRoomAsync(int adminId, int roomId)
         {
@@ -272,12 +421,32 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddUserSubscriptionAsync(int adminId, UserSubscription userSubscription)
+        public async Task<UserSubscription> AddUserSubscriptionAsync(UserSubscriptionDto userSubscriptionDto)
         {
-            userSubscription.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == userSubscriptionDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the UserSubscription entity
+            var userSubscription = new UserSubscription
+            {
+                SubscriptionPlanId = userSubscriptionDto.SubscriptionPlanId,
+                StartDate = userSubscriptionDto.StartDate,
+                EndDate = userSubscriptionDto.EndDate,
+                AdminId = userSubscriptionDto.AdminId
+            };
+
+            // Add the UserSubscription entity to the DbContext
             _context.UserSubscriptions.Add(userSubscription);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return userSubscription;
         }
+
 
         public async Task RemoveUserSubscriptionAsync(int adminId, int subscriptionId)
         {
@@ -298,12 +467,34 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddAutomationRuleAsync(int adminId, AutomationRule automationRule)
+        public async Task<AutomationRule> AddAutomationRuleAsync(AutomationRuleDto automationRuleDto)
         {
-            automationRule.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == automationRuleDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the AutomationRule entity
+            var automationRule = new AutomationRule
+            {
+                Name = automationRuleDto.Name,
+                Description = automationRuleDto.Description,
+                Trigger = automationRuleDto.Trigger,
+                Action = automationRuleDto.Action,
+                IsActive = automationRuleDto.IsActive,
+                AdminId = automationRuleDto.AdminId
+            };
+
+            // Add the AutomationRule entity to the DbContext
             _context.AutomationRules.Add(automationRule);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return automationRule;
         }
+
 
         public async Task RemoveAutomationRuleAsync(int adminId, int ruleId)
         {
@@ -324,12 +515,32 @@ namespace SmartHomeSystem.Repository.Services
                 .ToListAsync();
         }
 
-        public async Task AddNotificationAsync(int adminId, Notification notification)
+        public async Task<Notification> AddNotificationAsync(NotificationDto notificationDto)
         {
-            notification.AdminId = adminId;
+            // Check if the Admin exists
+            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == notificationDto.AdminId);
+            if (!adminExists)
+            {
+                throw new ArgumentException("Admin with the specified ID does not exist.");
+            }
+
+            // Map the DTO to the Notification entity
+            var notification = new Notification
+            {
+                Message = notificationDto.Message,
+                Timestamp = notificationDto.Timestamp,
+                IsRead = notificationDto.IsRead,
+                AdminId = notificationDto.AdminId
+            };
+
+            // Add the Notification entity to the DbContext
             _context.Notifications.Add(notification);
+
+            // Save changes to the database
             await _context.SaveChangesAsync();
+            return notification;
         }
+
 
         public async Task RemoveNotificationAsync(int adminId, int notificationId)
         {

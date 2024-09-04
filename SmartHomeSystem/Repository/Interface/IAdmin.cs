@@ -15,52 +15,52 @@ namespace SmartHomeSystem.Repository.Interface
 
         // Methods related to managing devices
         Task<IEnumerable<Device>> GetManagedDevicesAsync(int adminId);
-        Task AddDeviceAsync(int adminId, Device device);
+        Task<Device> AddDeviceAsync( DeviceDto deviceDto);
         Task RemoveDeviceAsync(int adminId, int deviceId);
 
         // Methods related to managing subscription plans
         Task<IEnumerable<SubscriptionPlan>> GetManagedSubscriptionPlansAsync(int adminId);
-        Task AddSubscriptionPlanAsync(int adminId, SubscriptionPlan plan);
+        Task<SubscriptionPlan> AddSubscriptionPlanAsync(SubscriptionPlanDto planDto);
         Task RemoveSubscriptionPlanAsync(int adminId, int planId);
 
         // Methods related to managing alerts
         Task<IEnumerable<Alert>> GetManagedAlertsAsync(int adminId);
-        Task AddAlertAsync(int adminId, Alert alert);
+        Task<Alert> AddAlertAsync(AlertDto alertDto);
         Task RemoveAlertAsync(int adminId, int alertId);
 
         // Methods related to managing energy usages
         Task<IEnumerable<EnergyUsage>> GetManagedEnergyUsagesAsync(int adminId);
-        Task AddEnergyUsageAsync(int adminId, EnergyUsage energyUsage);
+        Task<EnergyUsage> AddEnergyUsageAsync(EnergyUsageDto energyUsageDto);
         Task RemoveEnergyUsageAsync(int adminId, int energyUsageId);
 
         // Methods related to managing access controls
         Task<IEnumerable<AccessControl>> GetAllowedAccessControlsAsync(int adminId);
-        Task AddAccessControlAsync(int adminId, AccessControl accessControl);
+        Task<AccessControl> AddAccessControlAsync(AccessControlDto accessControlDto);
         Task RemoveAccessControlAsync(int adminId, int accessControlId);
 
         // Methods related to managing scenes
         Task<IEnumerable<Scene>> GetAccessibleScenesAsync(int adminId);
-        Task AddSceneAsync(int adminId, Scene scene);
+        Task<Scene> AddSceneAsync(SceneDto sceneDto);
         Task RemoveSceneAsync(int adminId, int sceneId);
 
         // Methods related to managing rooms
         Task<IEnumerable<Room>> GetRoomsAsync(int adminId);
-        Task AddRoomAsync(int adminId, Room room);
+        Task<Room> AddRoomAsync(RoomDto roomDto);
         Task RemoveRoomAsync(int adminId, int roomId);
 
         // Methods related to managing user subscriptions
         Task<IEnumerable<UserSubscription>> GetUserSubscriptionsAsync(int adminId);
-        Task AddUserSubscriptionAsync(int adminId, UserSubscription userSubscription);
+        Task<UserSubscription> AddUserSubscriptionAsync(UserSubscriptionDto userSubscriptionDto);
         Task RemoveUserSubscriptionAsync(int adminId, int subscriptionId);
 
         // Methods related to managing automation rules
         Task<IEnumerable<AutomationRule>> GetAutomationRulesAsync(int adminId);
-        Task AddAutomationRuleAsync(int adminId, AutomationRule automationRule);
+        Task<AutomationRule> AddAutomationRuleAsync(AutomationRuleDto automationRuleDto);
         Task RemoveAutomationRuleAsync(int adminId, int ruleId);
 
         // Methods related to managing notifications
         Task<IEnumerable<Notification>> GetNotificationsAsync(int adminId);
-        Task AddNotificationAsync(int adminId, Notification notification);
+        Task<Notification> AddNotificationAsync(NotificationDto notificationDto);
         Task RemoveNotificationAsync(int adminId, int notificationId);
     }
 }

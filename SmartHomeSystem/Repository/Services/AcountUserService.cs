@@ -7,6 +7,7 @@ using SmartHomeSystem.Models;
 using SmartHomeSystem.Repository.Interface;
 using System.Security.Claims;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartHomeSystem.Repository.Services
 {
@@ -102,9 +103,15 @@ namespace SmartHomeSystem.Repository.Services
                     switch (role)
                     {
                         case "Admin":
+                            // Check if there are already 3 admins
+                            var adminCount = await _context.Admins.CountAsync();
+                            if (adminCount >= 3)
+                            {
+                                throw new InvalidOperationException("Cannot add more than 3 admins.");
+                            }
+
                             var admin = new Admin
                             {
-                                AdminId = int.Parse(account.Id),  // Ensure this matches the primary key
                                 CharactersId = account.Id,
                                 Name = account.UserName,
                                 Email = account.Email
@@ -114,23 +121,19 @@ namespace SmartHomeSystem.Repository.Services
                         case "Guest":
                             var guest = new Guest
                             {
-                                GuestId = int.Parse(account.Id),  // Ensure this matches the primary key
-                                CharactersId = account.Id, 
-                                Name = account.UserName // Set the foreign key
-                                                            // Populate additional Guest fields if needed
+                                CharactersId = account.Id,
+                                Name = account.UserName
                             };
                             _context.Guests.Add(guest);
                             break;
                         case "Provider":
-                            _context.Providers.Add(new Provider
+                            var provider = new Provider
                             {
-                                ProviderId = int.Parse(account.Id),
                                 CharactersId = account.Id,
                                 Name = account.UserName,
                                 Email = account.Email
-                                // Populate additional Provider fields if needed
-                            });
-                            await _context.SaveChangesAsync();
+                            };
+                            _context.Providers.Add(provider);
                             break;
                     }
                 }
@@ -147,6 +150,8 @@ namespace SmartHomeSystem.Repository.Services
 
             throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
         }
+
+
 
         // Delete User
         public async Task<LogDTO> DeleteAccount(string username)

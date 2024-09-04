@@ -14,6 +14,8 @@
         public string ModelNumber { get; set; }
         public int AdminId { get; set; }
         public Admin Admin { get; set; }
+        public int GuestId { get; set; }
+        public Guest Guest { get; set; }
         public int ProviderId { get; set; } // Use string to match IdentityUser's Id
         public Provider Provider { get; set; }
         public ICollection<Alert> Alerts { get; set; }

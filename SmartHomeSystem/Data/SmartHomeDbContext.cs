@@ -126,11 +126,35 @@ namespace SmartHomeSystem.Data
                 .HasForeignKey(a => a.ProviderId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-            modelBuilder.Entity<House>()
-    .HasOne(h => h.Provider)
-    .WithMany(p => p.ManagedHouses)
-    .HasForeignKey(h => h.ProviderId)
-    .OnDelete(DeleteBehavior.NoAction);
+    //        modelBuilder.Entity<House>()
+    //.HasOne(h => h.Provider)
+    //.WithMany(p => p.ManagedHouses)
+    //.HasForeignKey(h => h.ProviderId)
+    //.OnDelete(DeleteBehavior.NoAction);
+
+    //        modelBuilder.Entity<Guest>()
+    //.HasOne(g => g.User)
+    //.WithOne(c => c.Guest)
+    //.HasForeignKey<Guest>(g => g.CharactersId)
+    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+    //        modelBuilder.Entity<Guest>()
+    //.HasMany(g => g.AllowedAccessControls)
+    //.WithOne(ac => ac.Guest) // Ensure AccessControl has a `Guest` navigation property
+    //.HasForeignKey(ac => ac.GuestId)
+    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+    //        modelBuilder.Entity<Guest>()
+    //.HasMany(g => g.AccessibleDevices)
+    //.WithOne(d => d.Guest) // Ensure Device has a `Guest` navigation property
+    //.HasForeignKey(d => d.GuestId)
+    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+
+    //        modelBuilder.Entity<Guest>()
+    //.HasMany(g => g.AccessibleScenes)
+    //.WithOne(s => s.Guest) // Ensure Scene has a `Guest` navigation property
+    //.HasForeignKey(s => s.GuestId)
+    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
             modelBuilder.Entity<LogEntry>()
                 .HasOne(le => le.Device)
@@ -162,7 +186,8 @@ namespace SmartHomeSystem.Data
             modelBuilder.Entity<Scene>()
                 .HasOne(s => s.Admin)
                 .WithMany(a => a.AccessibleScenes)
-                .HasForeignKey(s => s.AdminId);
+                .HasForeignKey(s => s.AdminId)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<SceneAction>()
                 .HasOne(sa => sa.Scene)

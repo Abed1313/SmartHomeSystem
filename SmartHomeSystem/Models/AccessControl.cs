@@ -6,6 +6,8 @@
         public int AdminId { get; set; }
         public Admin Admin { get; set; }
         public int HouseId { get; set; } // Foreign key
+        public int GuestId { get; set; }
+        public Guest Guest { get; set; }
         public House House { get; set; } // Navigation
         public int AccessLevelId { get; set; } // Foreign key
         public AccessLevel AccessLevel { get; set; } // Navigation

@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace SmartHomeSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class AddModelsAndRelationShip : Migration
+    public partial class convertStringIdToIntId : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -145,7 +147,8 @@ namespace SmartHomeSystem.Migrations
                 name: "Admins",
                 columns: table => new
                 {
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CharactersId = table.Column<string>(type: "nvarchar(450)", nullable: false)
@@ -250,7 +253,8 @@ namespace SmartHomeSystem.Migrations
                 name: "Guests",
                 columns: table => new
                 {
-                    GuestId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    GuestId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CharactersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -269,7 +273,8 @@ namespace SmartHomeSystem.Migrations
                 name: "Providers",
                 columns: table => new
                 {
-                    ProviderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     CharactersId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
@@ -296,7 +301,7 @@ namespace SmartHomeSystem.Migrations
                     Trigger = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -318,7 +323,7 @@ namespace SmartHomeSystem.Migrations
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     IsRead = table.Column<bool>(type: "bit", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -337,11 +342,11 @@ namespace SmartHomeSystem.Migrations
                 {
                     SceneId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    GuestId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    GuestId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -366,8 +371,8 @@ namespace SmartHomeSystem.Migrations
                     HouseId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -394,8 +399,8 @@ namespace SmartHomeSystem.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     MonthlyCost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProviderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -404,12 +409,14 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_SubscriptionPlans_Admins_AdminId",
                         column: x => x.AdminId,
                         principalTable: "Admins",
-                        principalColumn: "AdminId");
+                        principalColumn: "AdminId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_SubscriptionPlans_Providers_ProviderId",
                         column: x => x.ProviderId,
                         principalTable: "Providers",
-                        principalColumn: "ProviderId");
+                        principalColumn: "ProviderId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -418,12 +425,12 @@ namespace SmartHomeSystem.Migrations
                 {
                     AccessControlId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
                     HouseId = table.Column<int>(type: "int", nullable: false),
                     AccessLevelId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    GuestId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    GuestId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -462,7 +469,7 @@ namespace SmartHomeSystem.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     HouseId = table.Column<int>(type: "int", nullable: false),
                     RoomTypeId = table.Column<int>(type: "int", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -518,7 +525,7 @@ namespace SmartHomeSystem.Migrations
                     SubscriptionPlanId = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    AdminId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -550,9 +557,9 @@ namespace SmartHomeSystem.Migrations
                     LastCommunicationTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ModelNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    GuestId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    ProviderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false),
+                    GuestId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -578,7 +585,8 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_Devices_Providers_ProviderId",
                         column: x => x.ProviderId,
                         principalTable: "Providers",
-                        principalColumn: "ProviderId");
+                        principalColumn: "ProviderId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Devices_Rooms_RoomId",
                         column: x => x.RoomId,
@@ -593,11 +601,11 @@ namespace SmartHomeSystem.Migrations
                 {
                     AlertId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AdminId = table.Column<int>(type: "int", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ActionSeverityId = table.Column<int>(type: "int", nullable: false),
-                    ProviderId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false),
                     DeviceId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -624,8 +632,7 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_Alerts_Providers_ProviderId",
                         column: x => x.ProviderId,
                         principalTable: "Providers",
-                        principalColumn: "ProviderId",
-                        onDelete: ReferentialAction.Restrict);
+                        principalColumn: "ProviderId");
                 });
 
             migrationBuilder.CreateTable(
@@ -638,8 +645,8 @@ namespace SmartHomeSystem.Migrations
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EnergyConsumed = table.Column<float>(type: "real", nullable: false),
                     Cost = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    AdminId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                    AdminId = table.Column<int>(type: "int", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -660,7 +667,8 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_EnergyUsages_Providers_ProviderId",
                         column: x => x.ProviderId,
                         principalTable: "Providers",
-                        principalColumn: "ProviderId");
+                        principalColumn: "ProviderId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -721,6 +729,32 @@ namespace SmartHomeSystem.Migrations
                         principalTable: "Scenes",
                         principalColumn: "SceneId",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { "admin", "00000000-0000-0000-0000-000000000000", "Admin", "ADMIN" },
+                    { "guest", "00000000-0000-0000-0000-000000000000", "Guest", "GUEST" },
+                    { "provider", "00000000-0000-0000-0000-000000000000", "Provider", "PROVIDER" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoleClaims",
+                columns: new[] { "Id", "ClaimType", "ClaimValue", "RoleId" },
+                values: new object[,]
+                {
+                    { -1599047914, "permission", "update", "admin" },
+                    { -1166301098, "permission", "delete", "provider" },
+                    { -761904096, "permission", "read", "provider" },
+                    { 170081494, "permission", "update", "provider" },
+                    { 652439434, "permission", "read", "guest" },
+                    { 728177114, "permission", "delete", "admin" },
+                    { 782052165, "permission", "read", "admin" },
+                    { 878915507, "permission", "create", "admin" },
+                    { 1256841260, "permission", "create", "provider" }
                 });
 
             migrationBuilder.CreateIndex(
