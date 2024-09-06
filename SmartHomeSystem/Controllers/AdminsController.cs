@@ -54,12 +54,8 @@ namespace SmartHomeSystem.Controllers
 
         // Houses
         [HttpGet("houses")]
-        public async Task<ActionResult<IEnumerable<House>>> GetManagedHouses()
+        public async Task<ActionResult<IEnumerable<House>>> GetManagedHouses(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var houses = await _context.GetManagedHousesAsync(adminId);
             return Ok(houses);
@@ -87,12 +83,8 @@ namespace SmartHomeSystem.Controllers
 
         // Devices
         [HttpGet("devices")]
-        public async Task<ActionResult<IEnumerable<Device>>> GetManagedDevices()
+        public async Task<ActionResult<IEnumerable<Device>>> GetManagedDevices(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var devices = await _context.GetManagedDevicesAsync(adminId);
             return Ok(devices);
@@ -101,9 +93,9 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("devices")]
         public async Task<ActionResult> AddDevice([FromBody] DeviceDto deviceDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid admin ID.");
+                return BadRequest(ModelState);
             }
 
             await _context.AddDeviceAsync(deviceDto);
@@ -121,12 +113,8 @@ namespace SmartHomeSystem.Controllers
 
         // Subscription Plans
         [HttpGet("subscription-plans")]
-        public async Task<ActionResult<IEnumerable<SubscriptionPlan>>> GetManagedSubscriptionPlans()
+        public async Task<ActionResult<IEnumerable<SubscriptionPlan>>> GetManagedSubscriptionPlans(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var subscriptionPlans = await _context.GetManagedSubscriptionPlansAsync(adminId);
             return Ok(subscriptionPlans);
@@ -135,9 +123,9 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("subscription-plans")]
         public async Task<IActionResult> AddSubscriptionPlan([FromBody] SubscriptionPlanDto planDto )
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid admin ID.");
+                return BadRequest(ModelState);
             }
 
             await _context.AddSubscriptionPlanAsync(planDto);
@@ -154,13 +142,8 @@ namespace SmartHomeSystem.Controllers
 
         // Alerts
         [HttpGet("alerts")]
-        public async Task<ActionResult<IEnumerable<Alert>>> GetManagedAlerts()
+        public async Task<ActionResult<IEnumerable<Alert>>> GetManagedAlerts(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
-
             var alerts = await _context.GetManagedAlertsAsync(adminId);
             return Ok(alerts);
         }
@@ -168,9 +151,9 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("alerts")]
         public async Task<IActionResult> AddAlert([FromBody] AlertDto alertDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid admin ID.");
+                return BadRequest(ModelState);
             }
 
             await _context.AddAlertAsync( alertDto);
@@ -187,12 +170,9 @@ namespace SmartHomeSystem.Controllers
 
         // Energy Usages
         [HttpGet("energy-usages")]
-        public async Task<ActionResult<IEnumerable<EnergyUsage>>> GetManagedEnergyUsages()
+        public async Task<ActionResult<IEnumerable<EnergyUsage>>> GetManagedEnergyUsages(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+            
 
             var energyUsages = await _context.GetManagedEnergyUsagesAsync(adminId);
             return Ok(energyUsages);
@@ -201,9 +181,9 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("energy-usages")]
         public async Task<IActionResult> AddEnergyUsage([FromBody] EnergyUsageDto energyUsageDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid admin ID.");
+                return BadRequest(ModelState);
             }
 
             await _context.AddEnergyUsageAsync(energyUsageDto);
@@ -220,12 +200,8 @@ namespace SmartHomeSystem.Controllers
 
         // Access Controls
         [HttpGet("access-controls")]
-        public async Task<ActionResult<IEnumerable<AccessControl>>> GetAllowedAccessControls()
+        public async Task<ActionResult<IEnumerable<AccessControl>>> GetAllowedAccessControls(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var accessControls = await _context.GetAllowedAccessControlsAsync(adminId);
             return Ok(accessControls);
@@ -234,9 +210,9 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("access-controls")]
         public async Task<IActionResult> AddAccessControl([FromBody] AccessControlDto accessControlDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Invalid admin ID.");
+                return BadRequest(ModelState);
             }
 
             await _context.AddAccessControlAsync(accessControlDto);
@@ -252,12 +228,8 @@ namespace SmartHomeSystem.Controllers
 
         // Scenes
         [HttpGet("scenes")]
-        public async Task<ActionResult<IEnumerable<Scene>>> GetAccessibleScenes()
+        public async Task<ActionResult<IEnumerable<Scene>>> GetAccessibleScenes(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var scenes = await _context.GetAccessibleScenesAsync(adminId);
             return Ok(scenes);
@@ -266,8 +238,6 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("scenes")]
         public async Task<ActionResult> AddScene([FromBody] SceneDto sceneDto)
         {
-            
-
             await _context.AddSceneAsync(sceneDto);
             return Ok();
         }
@@ -282,12 +252,8 @@ namespace SmartHomeSystem.Controllers
 
         // Rooms
         [HttpGet("rooms")]
-        public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
+        public async Task<ActionResult<IEnumerable<Room>>> GetRooms(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var rooms = await _context.GetRoomsAsync(adminId);
             return Ok(rooms);
@@ -311,12 +277,8 @@ namespace SmartHomeSystem.Controllers
 
         // User Subscriptions
         [HttpGet("user-subscriptions")]
-        public async Task<ActionResult<IEnumerable<UserSubscription>>> GetUserSubscriptions()
+        public async Task<ActionResult<IEnumerable<UserSubscription>>> GetUserSubscriptions(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var subscriptions = await _context.GetUserSubscriptionsAsync(adminId);
             return Ok(subscriptions);
@@ -341,12 +303,8 @@ namespace SmartHomeSystem.Controllers
 
         // Automation Rules
         [HttpGet("automation-rules")]
-        public async Task<ActionResult<IEnumerable<AutomationRule>>> GetAutomationRules()
+        public async Task<ActionResult<IEnumerable<AutomationRule>>> GetAutomationRules(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             var rules = await _context.GetAutomationRulesAsync(adminId);
             return Ok(rules);
@@ -371,13 +329,8 @@ namespace SmartHomeSystem.Controllers
 
         // Notifications
         [HttpGet("notifications")]
-        public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications()
+        public async Task<ActionResult<IEnumerable<Notification>>> GetNotifications(int adminId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
-
             var notifications = await _context.GetNotificationsAsync(adminId);
             return Ok(notifications);
         }
