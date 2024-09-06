@@ -2,7 +2,6 @@
 {
     public class AlertDto
     {
-        public int AlertId { get; set; }
         public int AdminId { get; set; }
         public string Message { get; set; }
         public DateTime Timestamp { get; set; }

@@ -71,10 +71,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveHouseAsync(int adminId, int houseId)
+        public async Task RemoveHouseAsync( int houseId)
         {
             var house = await _context.Houses
-                .FirstOrDefaultAsync(h => h.AdminId == adminId && h.HouseId == houseId);
+                .FirstOrDefaultAsync(h =>h.HouseId == houseId);
 
             if (house != null)
             {
@@ -92,16 +92,11 @@ namespace SmartHomeSystem.Repository.Services
 
         public async Task<Device> AddDeviceAsync( DeviceDto deviceDto)
         {
-            // Check if the Admin exists
-            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == deviceDto.DeviceId);
-            if (!adminExists)
-            {
-                throw new ArgumentException("Admin with the specified ID does not exist.");
-            }
+            
 
             var devise = new Device
             {
-               DeviceId = deviceDto.DeviceId,
+               
                 Name = deviceDto.Name,
                AdminId = deviceDto.AdminId,
                 DeviceTypeId = deviceDto.DeviceTypeId,
@@ -110,7 +105,8 @@ namespace SmartHomeSystem.Repository.Services
                 LastCommunicationTime = deviceDto.LastCommunicationTime,
                 ProviderId = deviceDto.ProviderId,
                 ModelNumber = deviceDto.ModelNumber,
-                Manufacturer = deviceDto.Manufacturer
+                Manufacturer = deviceDto.Manufacturer,
+                GuestId = deviceDto.GuestId,
             };
             
 
@@ -122,10 +118,10 @@ namespace SmartHomeSystem.Repository.Services
             return devise;
         }
 
-        public async Task RemoveDeviceAsync(int adminId, int deviceId)
+        public async Task RemoveDeviceAsync( int deviceId)
         {
             var devise = await _context.Devices
-                .FirstOrDefaultAsync(d => d.AdminId == adminId && d.DeviceId == deviceId);
+                .FirstOrDefaultAsync(d =>  d.DeviceId == deviceId);
 
             if(devise != null) 
             {
@@ -169,10 +165,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveSubscriptionPlanAsync(int adminId, int planId)
+        public async Task RemoveSubscriptionPlanAsync( int planId)
         {
             var plan = await _context.SubscriptionPlans
-                .FirstOrDefaultAsync(s => s.AdminId == adminId && s.SubscriptionPlanId == planId);
+                .FirstOrDefaultAsync(s => s.SubscriptionPlanId == planId);
 
             if (plan != null)
             {
@@ -190,12 +186,7 @@ namespace SmartHomeSystem.Repository.Services
 
         public async Task<Alert> AddAlertAsync(AlertDto alertDto)
         {
-            // Check if the Admin exists
-            var adminExists = await _context.Admins.AnyAsync(a => a.AdminId == alertDto.AdminId);
-            if (!adminExists)
-            {
-                throw new ArgumentException("Admin with the specified ID does not exist.");
-            }
+            
 
             // Map the DTO to the Alert entity
             var alert = new Alert
@@ -216,10 +207,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveAlertAsync(int adminId, int alertId)
+        public async Task RemoveAlertAsync( int alertId)
         {
             var alert = await _context.Alerts
-                .FirstOrDefaultAsync(a => a.AdminId == adminId && a.AlertId == alertId);
+                .FirstOrDefaultAsync(a => a.AlertId == alertId);
 
             if(alert != null)
             {
@@ -263,10 +254,10 @@ namespace SmartHomeSystem.Repository.Services
             return energyUsage;
         }
 
-        public async Task RemoveEnergyUsageAsync(int adminId, int energyUsageId)
+        public async Task RemoveEnergyUsageAsync( int energyUsageId)
         {
             var energy = await _context.EnergyUsages
-                .FirstOrDefaultAsync(e => e.AdminId == adminId &&  e.EnergyUsageId == energyUsageId);
+                .FirstOrDefaultAsync(e =>  e.EnergyUsageId == energyUsageId);
             
             if (energy != null)
             {
@@ -298,7 +289,8 @@ namespace SmartHomeSystem.Repository.Services
                 HouseId = accessControlDto.HouseId,
                 AccessLevelId = accessControlDto.AccessLevelId,
                 StartTime = accessControlDto.StartTime,
-                EndTime = accessControlDto.EndTime
+                EndTime = accessControlDto.EndTime,
+                GuestId = accessControlDto.GuestId,
             };
 
             // Add the AccessControl entity to the DbContext
@@ -310,10 +302,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveAccessControlAsync(int adminId, int accessControlId)
+        public async Task RemoveAccessControlAsync(int accessControlId)
         {
             var access = await _context.AccessControls
-                .FirstOrDefaultAsync(a=>a.AdminId == adminId && a.AccessControlId == accessControlId);
+                .FirstOrDefaultAsync(a=> a.AccessControlId == accessControlId);
 
             if (access != null)
             {
@@ -344,7 +336,8 @@ namespace SmartHomeSystem.Repository.Services
                 AdminId = sceneDto.AdminId,
                 Name = sceneDto.Name,
                 Description = sceneDto.Description,
-                IsActive = sceneDto.IsActive
+                IsActive = sceneDto.IsActive,
+                GuestId = sceneDto.GuestId,
             };
 
             // Add the Scene entity to the DbContext
@@ -356,10 +349,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveSceneAsync(int adminId, int sceneId)
+        public async Task RemoveSceneAsync( int sceneId)
         {
             var scene = await _context.Scenes
-                .FirstOrDefaultAsync(s => s.AdminId == adminId &&  s.SceneId == sceneId);
+                .FirstOrDefaultAsync(s => s.SceneId == sceneId);
 
             if(scene != null)
             {
@@ -402,10 +395,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveRoomAsync(int adminId, int roomId)
+        public async Task RemoveRoomAsync( int roomId)
         {
             var room = await _context.Rooms
-                .FirstOrDefaultAsync(r => r.AdminId == adminId &&  r.RoomId == roomId);
+                .FirstOrDefaultAsync(r =>  r.RoomId == roomId);
 
             if(room != null)
             {
@@ -448,10 +441,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveUserSubscriptionAsync(int adminId, int subscriptionId)
+        public async Task RemoveUserSubscriptionAsync(int subscriptionId)
         {
             var user = await _context.UserSubscriptions
-                .FirstOrDefaultAsync(u => u.AdminId == adminId && u.UserSubscriptionId == subscriptionId);
+                .FirstOrDefaultAsync(u => u.UserSubscriptionId == subscriptionId);
 
             if(user != null)
             {
@@ -496,10 +489,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveAutomationRuleAsync(int adminId, int ruleId)
+        public async Task RemoveAutomationRuleAsync( int ruleId)
         {
             var automation = await _context.AutomationRules
-                .FirstOrDefaultAsync(a => a.AdminId == adminId && a.AutomationRuleId == ruleId);
+                .FirstOrDefaultAsync(a => a.AutomationRuleId == ruleId);
 
             if (automation != null)
             {
@@ -542,10 +535,10 @@ namespace SmartHomeSystem.Repository.Services
         }
 
 
-        public async Task RemoveNotificationAsync(int adminId, int notificationId)
+        public async Task RemoveNotificationAsync( int notificationId)
         {
             var notification = await _context.Notifications
-                .FirstOrDefaultAsync(n => n.AdminId == adminId &&  n.NotificationId == notificationId);
+                .FirstOrDefaultAsync(n =>  n.NotificationId == notificationId);
 
             if(notification != null)
             {

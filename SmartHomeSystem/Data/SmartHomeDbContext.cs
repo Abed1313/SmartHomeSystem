@@ -126,35 +126,35 @@ namespace SmartHomeSystem.Data
                 .HasForeignKey(a => a.ProviderId)
                 .OnDelete(DeleteBehavior.NoAction);
 
-    //        modelBuilder.Entity<House>()
-    //.HasOne(h => h.Provider)
-    //.WithMany(p => p.ManagedHouses)
-    //.HasForeignKey(h => h.ProviderId)
-    //.OnDelete(DeleteBehavior.NoAction);
+            modelBuilder.Entity<House>()
+    .HasOne(h => h.Provider)
+    .WithMany(p => p.ManagedHouses)
+    .HasForeignKey(h => h.ProviderId)
+    .OnDelete(DeleteBehavior.NoAction);
 
-    //        modelBuilder.Entity<Guest>()
-    //.HasOne(g => g.User)
-    //.WithOne(c => c.Guest)
-    //.HasForeignKey<Guest>(g => g.CharactersId)
-    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            modelBuilder.Entity<Guest>()
+    .HasOne(g => g.User)
+    .WithOne(c => c.Guest)
+    .HasForeignKey<Guest>(g => g.CharactersId)
+    .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
-    //        modelBuilder.Entity<Guest>()
-    //.HasMany(g => g.AllowedAccessControls)
-    //.WithOne(ac => ac.Guest) // Ensure AccessControl has a `Guest` navigation property
-    //.HasForeignKey(ac => ac.GuestId)
-    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            modelBuilder.Entity<Guest>()
+    .HasMany(g => g.AllowedAccessControls)
+    .WithOne(ac => ac.Guest) // Ensure AccessControl has a `Guest` navigation property
+    .HasForeignKey(ac => ac.GuestId)
+    .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
-    //        modelBuilder.Entity<Guest>()
-    //.HasMany(g => g.AccessibleDevices)
-    //.WithOne(d => d.Guest) // Ensure Device has a `Guest` navigation property
-    //.HasForeignKey(d => d.GuestId)
-    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            modelBuilder.Entity<Guest>()
+    .HasMany(g => g.AccessibleDevices)
+    .WithOne(d => d.Guest) // Ensure Device has a `Guest` navigation property
+    .HasForeignKey(d => d.GuestId)
+    .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
-    //        modelBuilder.Entity<Guest>()
-    //.HasMany(g => g.AccessibleScenes)
-    //.WithOne(s => s.Guest) // Ensure Scene has a `Guest` navigation property
-    //.HasForeignKey(s => s.GuestId)
-    //.OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
+            modelBuilder.Entity<Guest>()
+    .HasMany(g => g.AccessibleScenes)
+    .WithOne(s => s.Guest) // Ensure Scene has a `Guest` navigation property
+    .HasForeignKey(s => s.GuestId)
+    .OnDelete(DeleteBehavior.Restrict); // Prevent cascading delete
 
             modelBuilder.Entity<LogEntry>()
                 .HasOne(le => le.Device)
@@ -224,6 +224,117 @@ namespace SmartHomeSystem.Data
             modelBuilder.Entity<SubscriptionPlan>()
                 .Property(s => s.MonthlyCost)
                 .HasColumnType("decimal(18,2)"); // Adjust precision and scale as needed
+
+            // Seed data for ActionSeverity
+            modelBuilder.Entity<ActionSeverity>().HasData(
+                new ActionSeverity
+                {
+                    ActionSeverityId = 1,
+                    Name = "Info",
+                    Description = "Informational alerts that do not require immediate attention."
+                },
+                new ActionSeverity
+                {
+                    ActionSeverityId = 2,
+                    Name = "Warning",
+                    Description = "Alerts that require attention but are not critical."
+                },
+                new ActionSeverity
+                {
+                    ActionSeverityId = 3,
+                    Name = "Critical",
+                    Description = "Critical alerts that require immediate attention."
+                }
+            );
+
+            modelBuilder.Entity<ActionType>().HasData(
+       new ActionType
+       {
+           ActionTypeId = 1,
+           Name = "TurnOn",
+           Parameters = "None" // No specific parameters needed for this action
+       },
+       new ActionType
+       {
+           ActionTypeId = 2,
+           Name = "TurnOff",
+           Parameters = "None" // No specific parameters needed for this action
+       },
+       new ActionType
+       {
+           ActionTypeId = 3,
+           Name = "SetTemperature",
+           Parameters = "75°F" // Example parameter
+       },
+       new ActionType
+       {
+           ActionTypeId = 4,
+           Name = "SetBrightness",
+           Parameters = "50% Brightness" // Example parameter
+       }
+   );
+
+            modelBuilder.Entity<DeviceType>().HasData(
+        new DeviceType
+        {
+            DeviceTypeId = 1,
+            Name = "Light",
+            Description = "A smart light bulb that can be controlled remotely."
+        },
+        new DeviceType
+        {
+            DeviceTypeId = 2,
+            Name = "Thermostat",
+            Description = "A smart thermostat that controls the temperature of the house."
+        },
+        new DeviceType
+        {
+            DeviceTypeId = 3,
+            Name = "Security Camera",
+            Description = "A camera that provides remote monitoring of the house."
+        },
+        new DeviceType
+        {
+            DeviceTypeId = 4,
+            Name = "Smart Plug",
+            Description = "A smart plug that can be controlled to turn on or off connected devices."
+        }
+    );
+
+            modelBuilder.Entity<RoomType>().HasData(
+        new RoomType
+        {
+            RoomTypeId = 1,
+            Name = "Living Room",
+            Description = "A room in a house for general and informal everyday use."
+        },
+        new RoomType
+        {
+            RoomTypeId = 2,
+            Name = "Kitchen",
+            Description = "A room where food is prepared and cooked."
+        },
+        new RoomType
+        {
+            RoomTypeId = 3,
+            Name = "Bedroom",
+            Description = "A room used for sleeping."
+        },
+        new RoomType
+        {
+            RoomTypeId = 4,
+            Name = "Bathroom",
+            Description = "A room containing a bathtub or shower, and usually a toilet."
+        },
+        new RoomType
+        {
+            RoomTypeId = 5,
+            Name = "Garage",
+            Description = "A room for housing a vehicle or storage."
+        }
+    );
+
+
 
             seedRoles(modelBuilder, "Admin", "update", "read", "delete", "create");
             seedRoles(modelBuilder, "Guest", "read");

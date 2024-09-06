@@ -2,7 +2,6 @@
 {
     public class AutomationRuleDto
     {
-        public int AutomationRuleId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Trigger { get; set; }

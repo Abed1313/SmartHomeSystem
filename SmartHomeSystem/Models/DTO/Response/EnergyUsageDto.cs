@@ -2,7 +2,6 @@
 {
     public class EnergyUsageDto
     {
-        public int EnergyUsageId { get; set; }
         public int DeviceId { get; set; }
         public DateTime Timestamp { get; set; }
         public float EnergyConsumed { get; set; }

@@ -16,7 +16,6 @@ namespace SmartHomeSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class AdminsController : ControllerBase
     {
         private readonly IAdmin _context;
@@ -43,7 +42,14 @@ namespace SmartHomeSystem.Controllers
             {
                 return NotFound();
             }
-            return Ok(admin);
+            var adminDto = new AdminDto
+            {
+                Name = admin.Name,
+                Email = admin.Email,
+            };
+            return Ok(adminDto);
+           
+            
         }
 
         // Houses
@@ -74,12 +80,8 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("houses/{houseId}")]
         public async Task<ActionResult> RemoveHouse(int houseId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
-            await _context.RemoveHouseAsync(adminId, houseId);
+            await _context.RemoveHouseAsync( houseId);
             return Ok();
         }
 
@@ -111,12 +113,9 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("devices/{deviceId}")]
         public async Task<ActionResult> RemoveDevice(int deviceId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+            
 
-            await _context.RemoveDeviceAsync(adminId, deviceId);
+            await _context.RemoveDeviceAsync( deviceId);
             return Ok();
         }
 
@@ -148,12 +147,8 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("subscription-plans/{planId}")]
         public async Task<ActionResult> RemoveSubscriptionPlan(int planId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
-            await _context.RemoveSubscriptionPlanAsync(adminId, planId);
+            await _context.RemoveSubscriptionPlanAsync( planId);
             return Ok();
         }
 
@@ -185,12 +180,8 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("alerts/{alertId}")]
         public async Task<ActionResult> RemoveAlert(int alertId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
-            await _context.RemoveAlertAsync(adminId, alertId);
+            await _context.RemoveAlertAsync( alertId);
             return Ok();
         }
 
@@ -222,12 +213,8 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("energy-usages/{usageId}")]
         public async Task<ActionResult> RemoveEnergyUsage(int usageId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
-            await _context.RemoveEnergyUsageAsync(adminId, usageId);
+            await _context.RemoveEnergyUsageAsync( usageId);
             return Ok();
         }
 
@@ -259,12 +246,7 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("access-controls/{accessControlId}")]
         public async Task<ActionResult> RemoveAccessControl(int accessControlId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
-
-            await _context.RemoveAccessControlAsync(adminId, accessControlId);
+            await _context.RemoveAccessControlAsync(accessControlId);
             return Ok();
         }
 
@@ -293,12 +275,8 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("scenes/{sceneId}")]
         public async Task<ActionResult> RemoveScene(int sceneId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
-            await _context.RemoveSceneAsync(adminId, sceneId);
+            await _context.RemoveSceneAsync(sceneId);
             return Ok();
         }
 
@@ -318,11 +296,7 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("rooms")]
         public async Task<ActionResult> AddRoom([FromBody] RoomDto roomDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
-
+            
             await _context.AddRoomAsync(roomDto);
             return Ok();
         }
@@ -330,12 +304,8 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("rooms/{roomId}")]
         public async Task<ActionResult> RemoveRoom(int roomId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
-            await _context.RemoveRoomAsync(adminId, roomId);
+            await _context.RemoveRoomAsync(roomId);
             return Ok();
         }
 
@@ -355,11 +325,7 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("user-subscriptions")]
         public async Task<IActionResult> AddUserSubscription([FromBody] UserSubscriptionDto userSubscriptionDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
-
+            
             await _context.AddUserSubscriptionAsync(userSubscriptionDto);
             return Ok();
         }
@@ -367,12 +333,9 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("user-subscriptions/{subscriptionId}")]
         public async Task<ActionResult> RemoveUserSubscription(int subscriptionId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+           
 
-            await _context.RemoveUserSubscriptionAsync(adminId, subscriptionId);
+            await _context.RemoveUserSubscriptionAsync( subscriptionId);
             return Ok();
         }
 
@@ -392,10 +355,6 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("automation-rules")]
         public async Task<IActionResult> AddAutomationRule([FromBody] AutomationRuleDto automationRuleDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
 
             await _context.AddAutomationRuleAsync(automationRuleDto);
             return Ok();
@@ -404,12 +363,9 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("automation-rules/{ruleId}")]
         public async Task<ActionResult> RemoveAutomationRule(int ruleId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+           
 
-            await _context.RemoveAutomationRuleAsync(adminId, ruleId);
+            await _context.RemoveAutomationRuleAsync(ruleId);
             return Ok();
         }
 
@@ -429,10 +385,7 @@ namespace SmartHomeSystem.Controllers
         [HttpPost("notifications")]
         public async Task<ActionResult> AddNotification([FromBody] NotificationDto notificationDto)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+            
 
             await _context.AddNotificationAsync(notificationDto);
             return Ok();
@@ -441,12 +394,9 @@ namespace SmartHomeSystem.Controllers
         [HttpDelete("notifications/{notificationId}")]
         public async Task<ActionResult> RemoveNotification(int notificationId)
         {
-            if (!int.TryParse(User.Identity.Name, out int adminId))
-            {
-                return BadRequest("Invalid admin ID.");
-            }
+           
 
-            await _context.RemoveNotificationAsync(adminId, notificationId);
+            await _context.RemoveNotificationAsync(notificationId);
             return Ok();
         }
     }

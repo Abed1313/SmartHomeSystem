@@ -12,8 +12,8 @@ using SmartHomeSystem.Data;
 namespace SmartHomeSystem.Migrations
 {
     [DbContext(typeof(SmartHomeDbContext))]
-    [Migration("20240904180551_convertStringIdToIntId")]
-    partial class convertStringIdToIntId
+    [Migration("20240904221808_UpdateGuestNavegation")]
+    partial class UpdateGuestNavegation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,63 +102,63 @@ namespace SmartHomeSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = -1599047914,
+                            Id = -1548591340,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 782052165,
+                            Id = 1670665213,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 728177114,
+                            Id = 1528332082,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 878915507,
+                            Id = 1909978148,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 652439434,
+                            Id = 596000483,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "guest"
                         },
                         new
                         {
-                            Id = 170081494,
+                            Id = 1109820908,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = -761904096,
+                            Id = 1348354837,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = -1166301098,
+                            Id = 674821090,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = 1256841260,
+                            Id = -172807151,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "provider"
@@ -263,7 +263,7 @@ namespace SmartHomeSystem.Migrations
                     b.Property<DateTime?>("EndTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("GuestId")
+                    b.Property<int>("GuestId")
                         .HasColumnType("int");
 
                     b.Property<int>("HouseId")
@@ -532,7 +532,7 @@ namespace SmartHomeSystem.Migrations
                     b.Property<int>("DeviceTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("GuestId")
+                    b.Property<int>("GuestId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsOnline")
@@ -837,7 +837,7 @@ namespace SmartHomeSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("GuestId")
+                    b.Property<int>("GuestId")
                         .HasColumnType("int");
 
                     b.Property<bool>("IsActive")
@@ -1039,9 +1039,11 @@ namespace SmartHomeSystem.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("SmartHomeSystem.Models.Guest", null)
+                    b.HasOne("SmartHomeSystem.Models.Guest", "Guest")
                         .WithMany("AllowedAccessControls")
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SmartHomeSystem.Models.House", "House")
                         .WithMany("AccessControls")
@@ -1052,6 +1054,8 @@ namespace SmartHomeSystem.Migrations
                     b.Navigation("AccessLevel");
 
                     b.Navigation("Admin");
+
+                    b.Navigation("Guest");
 
                     b.Navigation("House");
                 });
@@ -1123,9 +1127,11 @@ namespace SmartHomeSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartHomeSystem.Models.Guest", null)
+                    b.HasOne("SmartHomeSystem.Models.Guest", "Guest")
                         .WithMany("AccessibleDevices")
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("SmartHomeSystem.Models.Provider", "Provider")
                         .WithMany("ManagedDevices")
@@ -1142,6 +1148,8 @@ namespace SmartHomeSystem.Migrations
                     b.Navigation("Admin");
 
                     b.Navigation("DeviceType");
+
+                    b.Navigation("Guest");
 
                     b.Navigation("Provider");
 
@@ -1180,7 +1188,7 @@ namespace SmartHomeSystem.Migrations
                     b.HasOne("SmartHomeSystem.Models.Characters", "User")
                         .WithOne("Guest")
                         .HasForeignKey("SmartHomeSystem.Models.Guest", "CharactersId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("User");
@@ -1278,14 +1286,18 @@ namespace SmartHomeSystem.Migrations
                     b.HasOne("SmartHomeSystem.Models.Admin", "Admin")
                         .WithMany("AccessibleScenes")
                         .HasForeignKey("AdminId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("SmartHomeSystem.Models.Guest", null)
+                    b.HasOne("SmartHomeSystem.Models.Guest", "Guest")
                         .WithMany("AccessibleScenes")
-                        .HasForeignKey("GuestId");
+                        .HasForeignKey("GuestId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.Navigation("Admin");
+
+                    b.Navigation("Guest");
                 });
 
             modelBuilder.Entity("SmartHomeSystem.Models.SceneAction", b =>

@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SmartHomeSystem.Migrations
 {
     /// <inheritdoc />
-    public partial class convertStringIdToIntId : Migration
+    public partial class UpdateGuestNavegation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -266,7 +266,7 @@ namespace SmartHomeSystem.Migrations
                         column: x => x.CharactersId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -344,9 +344,9 @@ namespace SmartHomeSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AdminId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    GuestId = table.Column<int>(type: "int", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    GuestId = table.Column<int>(type: "int", nullable: true)
+                    IsActive = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -355,13 +355,13 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_Scenes_Admins_AdminId",
                         column: x => x.AdminId,
                         principalTable: "Admins",
-                        principalColumn: "AdminId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AdminId");
                     table.ForeignKey(
                         name: "FK_Scenes_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
-                        principalColumn: "GuestId");
+                        principalColumn: "GuestId",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -427,10 +427,10 @@ namespace SmartHomeSystem.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AdminId = table.Column<int>(type: "int", nullable: false),
                     HouseId = table.Column<int>(type: "int", nullable: false),
+                    GuestId = table.Column<int>(type: "int", nullable: false),
                     AccessLevelId = table.Column<int>(type: "int", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    GuestId = table.Column<int>(type: "int", nullable: true)
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -451,7 +451,8 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_AccessControls_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
-                        principalColumn: "GuestId");
+                        principalColumn: "GuestId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_AccessControls_Houses_HouseId",
                         column: x => x.HouseId,
@@ -558,8 +559,8 @@ namespace SmartHomeSystem.Migrations
                     Manufacturer = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ModelNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AdminId = table.Column<int>(type: "int", nullable: false),
-                    ProviderId = table.Column<int>(type: "int", nullable: false),
-                    GuestId = table.Column<int>(type: "int", nullable: true)
+                    GuestId = table.Column<int>(type: "int", nullable: false),
+                    ProviderId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -580,7 +581,8 @@ namespace SmartHomeSystem.Migrations
                         name: "FK_Devices_Guests_GuestId",
                         column: x => x.GuestId,
                         principalTable: "Guests",
-                        principalColumn: "GuestId");
+                        principalColumn: "GuestId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Devices_Providers_ProviderId",
                         column: x => x.ProviderId,
@@ -746,15 +748,15 @@ namespace SmartHomeSystem.Migrations
                 columns: new[] { "Id", "ClaimType", "ClaimValue", "RoleId" },
                 values: new object[,]
                 {
-                    { -1599047914, "permission", "update", "admin" },
-                    { -1166301098, "permission", "delete", "provider" },
-                    { -761904096, "permission", "read", "provider" },
-                    { 170081494, "permission", "update", "provider" },
-                    { 652439434, "permission", "read", "guest" },
-                    { 728177114, "permission", "delete", "admin" },
-                    { 782052165, "permission", "read", "admin" },
-                    { 878915507, "permission", "create", "admin" },
-                    { 1256841260, "permission", "create", "provider" }
+                    { -1548591340, "permission", "update", "admin" },
+                    { -172807151, "permission", "create", "provider" },
+                    { 596000483, "permission", "read", "guest" },
+                    { 674821090, "permission", "delete", "provider" },
+                    { 1109820908, "permission", "update", "provider" },
+                    { 1348354837, "permission", "read", "provider" },
+                    { 1528332082, "permission", "delete", "admin" },
+                    { 1670665213, "permission", "read", "admin" },
+                    { 1909978148, "permission", "create", "admin" }
                 });
 
             migrationBuilder.CreateIndex(
