@@ -3,14 +3,16 @@ using SmartHomeSystem.Data;
 using SmartHomeSystem.Models;
 using SmartHomeSystem.Models.DTO.Response;
 using SmartHomeSystem.Repository.Interface;
+using System.Diagnostics;
+using System.Net.Mail;
+using System.Net;
 
 namespace SmartHomeSystem.Repository.Services
 {
     public class AdminService : IAdmin
     {
         private readonly SmartHomeDbContext _context;
-
-        public AdminService(SmartHomeDbContext context)
+        public AdminService( SmartHomeDbContext context)
         {
             _context = context;
         }
@@ -203,9 +205,10 @@ namespace SmartHomeSystem.Repository.Services
 
             // Save changes to the database
             await _context.SaveChangesAsync();
+            
             return alert;   
         }
-
+        
 
         public async Task RemoveAlertAsync( int alertId)
         {

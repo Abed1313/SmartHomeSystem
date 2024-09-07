@@ -19,6 +19,8 @@ namespace SmartHomeSystem
             string BuilderVar = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<SmartHomeDbContext>(optionX => optionX.UseSqlServer(BuilderVar));
 
+        
+
             builder.Services.AddIdentity<Characters, IdentityRole>()
                 .AddEntityFrameworkStores<SmartHomeDbContext>();
 
@@ -27,8 +29,7 @@ namespace SmartHomeSystem
             builder.Services.AddScoped<IGuest, GuestService>();
             builder.Services.AddScoped<IProvider, ProviderService>();
             builder.Services.AddScoped<JwtTokenServeses>();
-
-
+            
             // Add controllers to services
             builder.Services.AddControllers();
 

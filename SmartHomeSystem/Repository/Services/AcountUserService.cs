@@ -8,6 +8,9 @@ using SmartHomeSystem.Repository.Interface;
 using System.Security.Claims;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.Net.Mail;
+using System.Net;
 
 namespace SmartHomeSystem.Repository.Services
 {
@@ -39,6 +42,20 @@ namespace SmartHomeSystem.Repository.Services
                 return null; // or return a custom error indicating invalid credentials
             }
 
+            // Generate the token and roles
+            var token = await _jwtTokenServices.GenerateToken(user, TimeSpan.FromDays(14));
+            var roles = await _userManager.GetRolesAsync(user);
+
+            // Prepare the OTP message
+            string otpMessage = $"Logged in on time {DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")} , Welcome {user.UserName}! " +
+                                $"Thank you for using Smart Home System, where your home is at your fingertips. " +
+                                "Manage your devices, control access, and experience the comfort and security that technology brings to your living space. " +
+                                "Stay connected, stay secure, and enjoy the convenience of a smarter home!";
+            string subject = "A13";
+
+            // Send OTP via email 
+            SendOtpViaEmail(otpMessage, user.Email, subject);
+
             return new LogDTO
             {
                 Id = user.Id,
@@ -46,8 +63,35 @@ namespace SmartHomeSystem.Repository.Services
                 Token = await _jwtTokenServices.GenerateToken(user, TimeSpan.FromDays(14)),
                 Roles = await _userManager.GetRolesAsync(user)
             };
-        }
 
+        }
+        void SendOtpViaEmail(string mess, string email, string subject)
+        {
+            // Create a new instance of MailMessage class
+            MailMessage message = new MailMessage();
+            // Set subject of the message, body and sender information
+            message.Subject = subject;
+            message.Body = mess;
+            message.From = new MailAddress("Your Outlook Email", "Admin"); // ayawahidi@outlook.com
+            // Add To recipients and CC recipients
+            message.To.Add(new MailAddress(email, "Recipient 1"));
+            // Create an instance of SmtpClient class
+            SmtpClient client = new SmtpClient();
+            // Specify your mailing Host, Username, Password, Port # and Security option
+            client.Host = "smtp.office365.com";
+            client.Credentials = new NetworkCredential("Your Outlook Email", "Your Password");
+            client.Port = 587;
+            client.EnableSsl = true;
+            try
+            {
+                // Send this email
+                client.Send(message);
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine(ex.ToString());
+            }
+        }
         // Logout
         public async Task<LogDTO> LogoutUser(string username)
         {

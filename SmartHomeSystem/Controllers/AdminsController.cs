@@ -16,6 +16,7 @@ namespace SmartHomeSystem.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class AdminsController : ControllerBase
     {
         private readonly IAdmin _context;
