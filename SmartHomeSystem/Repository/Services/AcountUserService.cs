@@ -72,14 +72,14 @@ namespace SmartHomeSystem.Repository.Services
             // Set subject of the message, body and sender information
             message.Subject = subject;
             message.Body = mess;
-            message.From = new MailAddress("Your Outlook Email", "Admin"); // ayawahidi@outlook.com
+            message.From = new MailAddress("abed0177@outlook.com", "Admin"); // ayawahidi@outlook.com
             // Add To recipients and CC recipients
             message.To.Add(new MailAddress(email, "Recipient 1"));
             // Create an instance of SmtpClient class
             SmtpClient client = new SmtpClient();
             // Specify your mailing Host, Username, Password, Port # and Security option
             client.Host = "smtp.office365.com";
-            client.Credentials = new NetworkCredential("Your Outlook Email", "Your Password");
+            client.Credentials = new NetworkCredential("abed0177@outlook.com", "AbedAbed$$13");
             client.Port = 587;
             client.EnableSsl = true;
             try
