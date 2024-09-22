@@ -4,6 +4,7 @@
     {
         public int DeviceId { get; set; }
         public string Name { get; set; }
+        public string imageURL { get; set; }
         public int DeviceTypeId { get; set; } // Foreign key
         public DeviceType DeviceType { get; set; } // Navigation
         public int RoomId { get; set; } // Foreign key

@@ -68,6 +68,7 @@ namespace SmartHomeSystem.Repository.Services
                 ModelNumber = deviceDto.ModelNumber,
                 Manufacturer = deviceDto.Manufacturer,
                 GuestId = deviceDto.GuestId,
+                imageURL = deviceDto.imageURL,
             };
 
             _context.Devices.Add(devise);

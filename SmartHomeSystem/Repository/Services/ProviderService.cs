@@ -136,7 +136,8 @@ namespace SmartHomeSystem.Repository.Services
                 LastCommunicationTime = deviceDto.LastCommunicationTime,
                 ProviderId = deviceDto.ProviderId,
                 ModelNumber = deviceDto.ModelNumber,
-                Manufacturer = deviceDto.Manufacturer
+                Manufacturer = deviceDto.Manufacturer,
+                imageURL = deviceDto.imageURL,
             };
 
             _context.Devices.Add(devise);
@@ -157,6 +158,7 @@ namespace SmartHomeSystem.Repository.Services
                 Address = houseDto.Address,
                 AdminId = houseDto.AdminId,
                 ProviderId = houseDto.ProviderId,
+                imageURL = houseDto.imageURL,
             };
 
             _context.Houses.Add(house);

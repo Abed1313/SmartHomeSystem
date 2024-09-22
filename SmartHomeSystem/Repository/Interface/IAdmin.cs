@@ -11,11 +11,13 @@ namespace SmartHomeSystem.Repository.Interface
         // Methods related to managing houses
         Task<IEnumerable<House>> GetManagedHousesAsync(int adminId);
         Task<House> AddHouseAsync(HouseDto houseDto);
+        Task<House> UpdateHouseAsync(HouseDto HouseDto, int houseId);
         Task RemoveHouseAsync(int houseId);
 
         // Methods related to managing devices
         Task<IEnumerable<Device>> GetManagedDevicesAsync(int adminId);
         Task<Device> AddDeviceAsync( DeviceDto deviceDto);
+        Task<Device> UpdateDeviceAsync(UpdateDeviseDto deviceDto, int deviceId);
         Task RemoveDeviceAsync( int deviceId);
 
         // Methods related to managing subscription plans
@@ -46,6 +48,7 @@ namespace SmartHomeSystem.Repository.Interface
         // Methods related to managing rooms
         Task<IEnumerable<Room>> GetRoomsAsync(int adminId);
         Task<Room> AddRoomAsync(RoomDto roomDto);
+        Task<Room> UpdateRoomAsync(RoomDto roomDto, int roomId);
         Task RemoveRoomAsync( int roomId);
 
         // Methods related to managing user subscriptions

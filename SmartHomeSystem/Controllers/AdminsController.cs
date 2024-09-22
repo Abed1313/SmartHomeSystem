@@ -73,7 +73,27 @@ namespace SmartHomeSystem.Controllers
             var house = await _context.AddHouseAsync(houseDto);
             return Ok();
         }
-
+        [HttpPut("houses")]
+        public async Task<IActionResult> UpdateHouse(HouseDto houseDto, int houseId)
+        {
+            if(houseId != houseDto.HouseId)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var UpdateHouse = await _context.UpdateHouseAsync(houseDto, houseId);
+                if(UpdateHouse == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok();
+        }
         [HttpDelete("houses/{houseId}")]
         public async Task<ActionResult> RemoveHouse(int houseId)
         {
@@ -100,6 +120,27 @@ namespace SmartHomeSystem.Controllers
             }
 
             await _context.AddDeviceAsync(deviceDto);
+            return Ok();
+        }
+        [HttpPut("devices")]
+        public async Task<IActionResult> UpdateDevices(UpdateDeviseDto deviceDto, int deviceId)
+        {
+            if (deviceId != deviceDto.DeviceId)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var UpdateHouse = await _context.UpdateDeviceAsync(deviceDto, deviceId);
+                if (UpdateHouse == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             return Ok();
         }
 
@@ -268,7 +309,29 @@ namespace SmartHomeSystem.Controllers
             return Ok();
         }
 
-        [HttpDelete("rooms/{roomId}")]
+        [HttpPut("rooms")]
+        public async Task<ActionResult> UpdateRoom(RoomDto roomDto, int roomId)
+        {
+            if (roomId != roomDto.RoomId)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                var room = await _context.UpdateRoomAsync(roomDto, roomId);
+                if (room == null)
+                {
+                    return NotFound();
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+            return Ok();
+        }
+
+            [HttpDelete("rooms/{roomId}")]
         public async Task<ActionResult> RemoveRoom(int roomId)
         {
 

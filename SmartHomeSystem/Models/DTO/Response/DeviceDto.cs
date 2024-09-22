@@ -2,10 +2,11 @@
 {
     public class DeviceDto
     {
-        
+        public int DeviceId { get; set; }
         public string Name { get; set; }
         public int DeviceTypeId { get; set; }
         public int RoomId { get; set; }
+        public string imageURL { get; set; }
         public bool IsOnline { get; set; }
         public DateTime LastCommunicationTime { get; set; }
         public string Manufacturer { get; set; }

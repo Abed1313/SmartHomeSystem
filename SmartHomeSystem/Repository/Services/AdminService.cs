@@ -60,6 +60,7 @@ namespace SmartHomeSystem.Repository.Services
                 Address = houseDto.Address,
                 AdminId = houseDto.AdminId,
                 ProviderId = houseDto.ProviderId,
+                imageURL = houseDto.imageURL,
             };
 
             // Add the House entity to the DbContext
@@ -72,6 +73,21 @@ namespace SmartHomeSystem.Repository.Services
             return house;
         }
 
+        public async Task<House> UpdateHouseAsync(HouseDto HouseDto, int houseId)
+        {
+            var house = await _context.Houses.FindAsync(houseId);
+            if (house == null)
+            {
+                throw new Exception($"House with ID {houseId} not found.");
+            }
+            house.Address = HouseDto.Address;
+            house.AdminId = HouseDto.AdminId;
+            house.imageURL = HouseDto.imageURL;
+            house.ProviderId = HouseDto.ProviderId;
+
+            await _context.SaveChangesAsync();
+            return house;
+        }
 
         public async Task RemoveHouseAsync( int houseId)
         {
@@ -109,6 +125,7 @@ namespace SmartHomeSystem.Repository.Services
                 ModelNumber = deviceDto.ModelNumber,
                 Manufacturer = deviceDto.Manufacturer,
                 GuestId = deviceDto.GuestId,
+                imageURL = deviceDto.imageURL,
             };
             
 
@@ -118,6 +135,25 @@ namespace SmartHomeSystem.Repository.Services
             await _context.SaveChangesAsync();
 
             return devise;
+        }
+
+        public async Task<Device> UpdateDeviceAsync(UpdateDeviseDto deviceDto, int deviceId)
+        {
+            var devise = await _context.Devices.FindAsync(deviceId);
+            if (devise == null)
+            {
+                throw new Exception($"Devise with ID {deviceId} not found.");
+            }
+
+            devise.Name = deviceDto.Name;
+            devise.DeviceTypeId = deviceDto.DeviceTypeId;
+            devise.IsOnline = deviceDto.IsOnline;
+            devise.imageURL = deviceDto.imageURL;
+            devise.ModelNumber = deviceDto.ModelNumber;
+
+            await _context.SaveChangesAsync();
+            return devise;
+
         }
 
         public async Task RemoveDeviceAsync( int deviceId)
@@ -386,7 +422,8 @@ namespace SmartHomeSystem.Repository.Services
                 Name = roomDto.Name,
                 HouseId = roomDto.HouseId,
                 RoomTypeId = roomDto.RoomTypeId,
-                AdminId = roomDto.AdminId
+                AdminId = roomDto.AdminId,
+                imageURL = roomDto.imageURL,
             };
 
             // Add the Room entity to the DbContext
@@ -397,7 +434,22 @@ namespace SmartHomeSystem.Repository.Services
             return room;
         }
 
+        public async Task<Room> UpdateRoomAsync(RoomDto roomDto, int roomId)
+        {
+            var Room = await _context.Rooms.FindAsync(roomId);
+            if (Room == null)
+            {
+                throw new Exception($"Room with ID {roomId} not found.");
+            }
 
+            Room.Name = roomDto.Name;
+            Room.AdminId = roomDto.AdminId;
+            Room.imageURL = roomDto.imageURL;
+            Room.RoomTypeId = roomDto.RoomTypeId;
+
+            await _context.SaveChangesAsync();
+            return Room;
+        }
         public async Task RemoveRoomAsync( int roomId)
         {
             var room = await _context.Rooms
@@ -549,7 +601,5 @@ namespace SmartHomeSystem.Repository.Services
                 await _context.SaveChangesAsync();
             }
         }
-
-        
     }
 }

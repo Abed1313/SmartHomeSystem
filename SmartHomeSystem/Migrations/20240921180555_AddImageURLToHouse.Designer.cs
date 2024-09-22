@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHomeSystem.Data;
 
@@ -11,9 +12,11 @@ using SmartHomeSystem.Data;
 namespace SmartHomeSystem.Migrations
 {
     [DbContext(typeof(SmartHomeDbContext))]
-    partial class SmartHomeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240921180555_AddImageURLToHouse")]
+    partial class AddImageURLToHouse
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,63 +102,63 @@ namespace SmartHomeSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1098126104,
+                            Id = 1166938286,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = -1652053595,
+                            Id = 2106559691,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1324152588,
+                            Id = 180769010,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = -813727211,
+                            Id = -1124861648,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1606858015,
+                            Id = -1126102919,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "guest"
                         },
                         new
                         {
-                            Id = -1056832207,
+                            Id = -516488673,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = -1779305417,
+                            Id = 82888373,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = 1248525400,
+                            Id = -976797402,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = -197769108,
+                            Id = -1700262929,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "provider"
@@ -602,10 +605,6 @@ namespace SmartHomeSystem.Migrations
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<string>("imageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("DeviceId");
 
                     b.HasIndex("AdminId");
@@ -866,10 +865,6 @@ namespace SmartHomeSystem.Migrations
 
                     b.Property<int>("RoomTypeId")
                         .HasColumnType("int");
-
-                    b.Property<string>("imageURL")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("RoomId");
 

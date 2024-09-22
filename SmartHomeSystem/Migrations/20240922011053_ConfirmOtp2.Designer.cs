@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHomeSystem.Data;
 
@@ -11,9 +12,11 @@ using SmartHomeSystem.Data;
 namespace SmartHomeSystem.Migrations
 {
     [DbContext(typeof(SmartHomeDbContext))]
-    partial class SmartHomeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922011053_ConfirmOtp2")]
+    partial class ConfirmOtp2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,63 +102,63 @@ namespace SmartHomeSystem.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1098126104,
+                            Id = -278569813,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = -1652053595,
+                            Id = -60217996,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1324152588,
+                            Id = -1127195948,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = -813727211,
+                            Id = -1188833338,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "admin"
                         },
                         new
                         {
-                            Id = 1606858015,
+                            Id = 142015505,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "guest"
                         },
                         new
                         {
-                            Id = -1056832207,
+                            Id = 1514609112,
                             ClaimType = "permission",
                             ClaimValue = "update",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = -1779305417,
+                            Id = -1297841779,
                             ClaimType = "permission",
                             ClaimValue = "read",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = 1248525400,
+                            Id = -1756583037,
                             ClaimType = "permission",
                             ClaimValue = "delete",
                             RoleId = "provider"
                         },
                         new
                         {
-                            Id = -197769108,
+                            Id = -427699353,
                             ClaimType = "permission",
                             ClaimValue = "create",
                             RoleId = "provider"
@@ -515,6 +518,9 @@ namespace SmartHomeSystem.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsConfirmed")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -528,6 +534,10 @@ namespace SmartHomeSystem.Migrations
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("OTP")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");

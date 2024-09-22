@@ -72,14 +72,14 @@ namespace SmartHomeSystem.Repository.Services
             // Set subject of the message, body and sender information
             message.Subject = subject;
             message.Body = mess;
-            message.From = new MailAddress("abed0177@outlook.com", "Admin"); // ayawahidi@outlook.com
+            message.From = new MailAddress("example@outlook.com", "Admin"); // ayawahidi@outlook.com
             // Add To recipients and CC recipients
             message.To.Add(new MailAddress(email, "Recipient 1"));
             // Create an instance of SmtpClient class
             SmtpClient client = new SmtpClient();
             // Specify your mailing Host, Username, Password, Port # and Security option
             client.Host = "smtp.office365.com";
-            client.Credentials = new NetworkCredential("abed0177@outlook.com", "AbedAbed$$13");
+            client.Credentials = new NetworkCredential("example@outlook.com", "Password");
             client.Port = 587;
             client.EnableSsl = true;
             try
@@ -181,7 +181,15 @@ namespace SmartHomeSystem.Repository.Services
                             break;
                     }
                 }
-                await _context.SaveChangesAsync(); // Ensure changes are saved
+                await _context.SaveChangesAsync(); 
+
+                //// Generate OTP or confirmation message
+                //string otp = GenerateOtp(); // You can implement this method to generate an OTP.
+                //string emailSubject = "Welcome to the platform - Confirm your account";
+                //string emailBody = $"Dear {registerUserDTO.UserName},\n\nYour OTP code is: {otp}\n\nUse this to confirm your registration.";
+
+                //// Send OTP via email
+                //SendOtpViaEmail(emailBody, registerUserDTO.Email, emailSubject);
 
                 return new LogDTO
                 {
@@ -195,6 +203,11 @@ namespace SmartHomeSystem.Repository.Services
             throw new Exception("User creation failed: " + string.Join(", ", result.Errors.Select(e => e.Description)));
         }
 
+        //private string GenerateOtp()
+        //{
+        //    Random random = new Random();
+        //    return random.Next(100000, 999999).ToString();
+        //}
 
 
         // Delete User

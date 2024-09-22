@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartHomeSystem.Data;
 
@@ -11,9 +12,11 @@ using SmartHomeSystem.Data;
 namespace SmartHomeSystem.Migrations
 {
     [DbContext(typeof(SmartHomeDbContext))]
-    partial class SmartHomeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240922011519_ConfirmOtp2Delet")]
+    partial class ConfirmOtp2Delet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

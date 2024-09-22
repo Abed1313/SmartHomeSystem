@@ -4,6 +4,7 @@
     {
         public int RoomId { get; set; }
         public string Name { get; set; }
+        public string imageURL { get; set; }
         public int HouseId { get; set; } // Foreign key
         public House House { get; set; } // Navigation
         public int RoomTypeId { get; set; } // Foreign key
