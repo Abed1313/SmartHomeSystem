@@ -209,6 +209,37 @@ namespace SmartHomeSystem.Repository.Services
         //    return random.Next(100000, 999999).ToString();
         //}
 
+        public async Task<IdentityResult> ChangePasswordAsync(string userId, ChangePasswordDTO model)
+        {
+            // Get the user by Id
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "User not found."
+                });
+            }
+
+            // Ensure the new password matches the confirmation
+            if (model.NewPassword != model.ConfirmNewPassword)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "New password and confirmation do not match."
+                });
+            }
+
+            // Change the user's password
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+            if (result.Succeeded)
+            {
+                // Sign in the user again to refresh the security token
+                await _signInManager.RefreshSignInAsync(user);
+            }
+
+            return result;
+        }
 
         // Delete User
         public async Task<LogDTO> DeleteAccount(string username)

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using SmartHomeSystem.Models;
 using SmartHomeSystem.Models.DTO.Request;
 using SmartHomeSystem.Models.DTO.Response;
@@ -16,6 +17,7 @@ namespace SmartHomeSystem.Repository.Interface
 
         public Task<LogDTO> LogoutUser(string Username);
         //Task AddRoleSpecificEntity(string role, Characters account);
+        public Task<IdentityResult> ChangePasswordAsync(string userId, ChangePasswordDTO model);
         public Task<LogDTO> DeleteAccount(string username);
 
         // add user profile 
