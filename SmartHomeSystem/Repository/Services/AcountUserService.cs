@@ -11,6 +11,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using System.Net.Mail;
 using System.Net;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace SmartHomeSystem.Repository.Services
 {
@@ -65,21 +66,21 @@ namespace SmartHomeSystem.Repository.Services
             };
 
         }
-        void SendOtpViaEmail(string mess, string email, string subject)
+      public async Task SendOtpViaEmail(string mess, string email, string subject)
         {
             // Create a new instance of MailMessage class
             MailMessage message = new MailMessage();
             // Set subject of the message, body and sender information
             message.Subject = subject;
             message.Body = mess;
-            message.From = new MailAddress("example@outlook.com", "Admin"); // ayawahidi@outlook.com
+            message.From = new MailAddress("Example@outlook.com", "Admin"); 
             // Add To recipients and CC recipients
             message.To.Add(new MailAddress(email, "Recipient 1"));
             // Create an instance of SmtpClient class
             SmtpClient client = new SmtpClient();
             // Specify your mailing Host, Username, Password, Port # and Security option
             client.Host = "smtp.office365.com";
-            client.Credentials = new NetworkCredential("example@outlook.com", "Password");
+            client.Credentials = new NetworkCredential("Example@outlook.com", "Password");
             client.Port = 587;
             client.EnableSsl = true;
             try
@@ -210,7 +211,7 @@ namespace SmartHomeSystem.Repository.Services
         //}
 
         public async Task<IdentityResult> ChangePasswordAsync(string userId, ChangePasswordDTO model)
-        {
+        {                                                        // To ChangePassword you must be Loged in 
             // Get the user by Id
             var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
@@ -235,6 +236,43 @@ namespace SmartHomeSystem.Repository.Services
             if (result.Succeeded)
             {
                 // Sign in the user again to refresh the security token
+                await _signInManager.RefreshSignInAsync(user);
+            }
+
+            return result;
+        }
+        public async Task<IdentityResult> ForgetPasswordAsync(ForgotPasswordDTO model)
+        {
+            // Check if user exists by Email and Name
+            var user = await _userManager.Users
+                .FirstOrDefaultAsync(u => u.Email == model.Email && u.UserName == model.Name);
+
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "User with the specified email and name not found."
+                });
+            }
+
+            // Ensure the new password matches the confirmation
+            if (model.NewPassword != model.ConfirmNewPassword)
+            {
+                return IdentityResult.Failed(new IdentityError
+                {
+                    Description = "New password and confirmation do not match."
+                });
+            }
+
+            // Generate a password reset token
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+
+            // Reset the user's password using the token
+            var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+
+            if (result.Succeeded)
+            {
+                // Optionally: Sign in the user again to refresh the security token
                 await _signInManager.RefreshSignInAsync(user);
             }
 

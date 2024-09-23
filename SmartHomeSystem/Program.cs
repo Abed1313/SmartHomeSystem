@@ -22,7 +22,8 @@ namespace SmartHomeSystem
         
 
             builder.Services.AddIdentity<Characters, IdentityRole>()
-                .AddEntityFrameworkStores<SmartHomeDbContext>();
+                .AddEntityFrameworkStores<SmartHomeDbContext>()
+                 .AddDefaultTokenProviders(); //Secrch About this line(i used it for ForgotPassword) --> // Adding default token providers 
 
             builder.Services.AddScoped<IAcountUser, AccountUserService>();
             builder.Services.AddScoped<IAdmin, AdminService>();

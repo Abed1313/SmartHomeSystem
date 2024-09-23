@@ -2,11 +2,14 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using SmartHomeSystem.Data;
 using SmartHomeSystem.Models;
 using SmartHomeSystem.Models.DTO.Request;
 using SmartHomeSystem.Models.DTO.Response;
 using SmartHomeSystem.Repository.Interface;
 using SmartHomeSystem.Repository.Services;
+using System.Security.Claims;
 
 namespace SmartHomeSystem.Controllers
 {
@@ -87,5 +90,27 @@ namespace SmartHomeSystem.Controllers
         {
             var user = await _userManager.DeleteAccount(username);
         }
+        
+        [HttpPost("ForgotPassword")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordDTO forgotPasswordDTO)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var userId = _identityUserManager.GetUserId(User); // Get the currently logged-in user's ID
+            var result = await _userManager.ForgetPasswordAsync(forgotPasswordDTO);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+
+            return Ok("Password changed successfully.");
+        }
+
     }
 }
